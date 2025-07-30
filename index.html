@@ -1,7 +1,389 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nimbo - Stiamo Arrivando!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0d7fc3 0%, #00b6ed 50%, #00b1eb 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) { width: 20px; height: 20px; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 30px; height: 30px; left: 20%; animation-delay: 1s; }
+        .particle:nth-child(3) { width: 15px; height: 15px; left: 70%; animation-delay: 2s; }
+        .particle:nth-child(4) { width: 25px; height: 25px; left: 80%; animation-delay: 3s; }
+        .particle:nth-child(5) { width: 35px; height: 35px; left: 90%; animation-delay: 4s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Main container */
+        .container {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+            max-width: 600px;
+            z-index: 10;
+            position: relative;
+        }
+
+        /* Logo area */
+        .logo-container {
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .logo {
+            margin-bottom: 10px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .logo svg {
+            width: 300px;
+            height: auto;
+            max-width: 100%;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Main content */
+        .main-content {
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .description {
+            font-size: 1rem;
+            font-weight: 400;
+            margin-bottom: 40px;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        /* Progress indicator */
+        .progress-container {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 4px;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: linear-gradient(90deg, #f39125, #ffc819);
+            border-radius: 20px;
+            width: 0%;
+            animation: loadProgress 3s ease-out 1s forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes loadProgress {
+            to { width: 75%; }
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Status badges */
+        .status-badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.9s both;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: bounceIn 0.6s ease-out;
+        }
+
+        .badge.active {
+            background: linear-gradient(45deg, #f39125, #ffc819);
+            color: #0d7fc3;
+            font-weight: 600;
+        }
+
+        /* Contact info */
+        .contact-info {
+            animation: fadeInUp 1s ease-out 1.2s both;
+        }
+
+        .contact-text {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .email-link {
+            color: #ffc819;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 12px 24px;
+            border: 2px solid #ffc819;
+            border-radius: 25px;
+            display: inline-block;
+            transition: all 0.3s ease;
+            background: rgba(255, 200, 25, 0.1);
+        }
+
+        .email-link:hover {
+            background: #ffc819;
+            color: #0d7fc3;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 200, 25, 0.3);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .logo svg { width: 250px; }
+            .title { font-size: 2rem; }
+            .subtitle { font-size: 1.1rem; }
+            .description { font-size: 0.95rem; }
+            .container { padding: 20px 15px; }
+            .status-badges { gap: 10px; }
+            .badge { padding: 6px 12px; font-size: 0.8rem; }
+        }
+
+        @media (max-width: 480px) {
+            .logo svg { width: 200px; }
+            .title { font-size: 1.8rem; }
+            .subtitle { font-size: 1rem; }
+            .status-badges { flex-direction: column; align-items: center; }
+        }
+
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .badge {
+                border: 2px solid white;
+            }
+            .email-link {
+                border-width: 3px;
+            }
+        }
+    </style>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+    <!-- Animated background particles -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="container">
+        <div class="logo-container">
+            <div class="logo">
+                <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Gradiente arancione per "ni" -->
+                        <linearGradient id="orangeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#f39125;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#ffc819;stop-opacity:1" />
+                        </linearGradient>
+                        
+                        <!-- Gradiente blu per "mbo" -->
+                        <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#0d7fc3;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#00b6ed;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    
+                    <!-- Lettera "n" -->
+                    <path d="M20 95 C20 95 20 75 20 60 C20 45 30 35 45 35 C60 35 70 45 70 60 L70 95" 
+                          stroke="url(#orangeGradient)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    
+                    <!-- Lettera "i" -->
+                    <circle cx="105" cy="25" r="10" fill="url(#orangeGradient)"/>
+                    <path d="M105 50 L105 95" stroke="url(#orangeGradient)" stroke-width="20" stroke-linecap="round"/>
+                    
+                    <!-- Lettera "m" -->
+                    <path d="M140 95 L140 60 C140 45 150 35 165 35 C175 35 180 40 180 45 C180 40 185 35 195 35 C210 35 220 45 220 60 L220 95" 
+                          stroke="url(#blueGradient)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    
+                    <!-- Lettera "b" -->
+                    <path d="M255 20 L255 95" stroke="url(#blueGradient)" stroke-width="20" stroke-linecap="round"/>
+                    <path d="M255 45 C255 45 275 35 295 45 C310 52 310 68 295 75 C275 85 255 75 255 75" 
+                          stroke="url(#blueGradient)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    
+                    <!-- Lettera "o" con due cerchi -->
+                    <circle cx="345" cy="65" r="25" stroke="url(#blueGradient)" stroke-width="20" fill="none"/>
+                    <circle cx="380" cy="30" r="15" fill="url(#blueGradient)"/>
+                    
+                    <!-- Animazioni -->
+                    <style>
+                        .logo-letter {
+                            animation: drawPath 2s ease-in-out;
+                        }
+                        
+                        @keyframes drawPath {
+                            0% { stroke-dasharray: 1000; stroke-dashoffset: 1000; }
+                            100% { stroke-dasharray: 1000; stroke-dashoffset: 0; }
+                        }
+                    </style>
+                </svg>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <h1 class="title">Stiamo arrivando!</h1>
+            <p class="subtitle">Qualcosa di incredibile sta per nascere</p>
+            <p class="description">
+                Il nostro team sta lavorando duramente per creare un'esperienza unica e innovativa. 
+                Presto potrai scoprire tutto quello che abbiamo preparato per te.
+            </p>
+
+            <div class="progress-container">
+                <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75"></div>
+            </div>
+
+            <div class="status-badges">
+                <span class="badge active">Design ✓</span>
+                <span class="badge active">Sviluppo ✓</span>
+                <span class="badge">Testing</span>
+                <span class="badge">Launch</span>
+            </div>
+
+            <div class="contact-info">
+                <p class="contact-text">Vuoi rimanere aggiornato sui nostri progressi?</p>
+                <a href="mailto:info@nimbo.it" class="email-link" role="button">
+                    Contattaci
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add dynamic progress animation
+        setTimeout(() => {
+            const progressBar = document.querySelector('.progress-bar');
+            progressBar.setAttribute('aria-valuenow', '75');
+        }, 1000);
+
+        // Add some interactive effects
+        document.addEventListener('mousemove', (e) => {
+            const particles = document.querySelectorAll('.particle');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            particles.forEach((particle, index) => {
+                const speed = (index + 1) * 0.5;
+                const xPos = x * speed;
+                const yPos = y * speed;
+                
+                particle.style.transform += ` translate(${xPos}px, ${yPos}px)`;
+            });
+        });
+
+        // Accessibility: respect user's motion preferences
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.querySelectorAll('.particle').forEach(particle => {
+                particle.style.animation = 'none';
+            });
+        }
+    </script>
 </body>
 </html>
